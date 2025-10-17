@@ -47,7 +47,7 @@ class Criterium(ABC):
             raise ValueError(f"Criterium '{name}' not supported")
 
     @abstractmethod
-    def impurity(self, V: pd.DataFrame) -> float:
+    def impurity(self, values: pd.DataFrame) -> float:
         """
         Computes the impurity of a node based on its samples.
 
@@ -55,7 +55,7 @@ class Criterium(ABC):
         such as using entropy or Gini index.
 
         Args:
-            V (pd.DataFrame): Data samples for a node.
+            values(pd.DataFrame): Data samples for a node.
 
         Returns:
             float: The impurity value of the node.
@@ -63,7 +63,7 @@ class Criterium(ABC):
         pass
 
     @abstractmethod
-    def gain(self, a: str, X: pd.DataFrame, Y: list[pd.DataFrame]) -> float:
+    def gain(self, a: str, x: pd.DataFrame, y: list[pd.DataFrame]) -> float:
         """
         Computes the information gain of splitting a node using a given attribute.
 
@@ -72,8 +72,8 @@ class Criterium(ABC):
 
         Args:
             a (str): The attribute being evaluated.
-            X (pd.DataFrame): Input samples.
-            Y (list[pd.DataFrame]): List of output samples for each child node.
+            x (pd.DataFrame): Input samples.
+            y (list[pd.DataFrame]): List of output samples for each child node.
 
         Returns:
             float: The information gain value.
@@ -81,7 +81,7 @@ class Criterium(ABC):
         pass
 
     @abstractmethod
-    def treeImpurity(self, nodes: list[pd.DataFrame]) -> float:
+    def tree_impurity(self, nodes: list[pd.DataFrame]) -> float:
         """
         Computes the overall impurity of a tree based on its nodes.
 

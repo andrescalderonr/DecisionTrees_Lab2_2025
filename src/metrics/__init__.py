@@ -1,3 +1,4 @@
+from .Metric import Metric
 from .Accuracy import Accuracy
 from .Precision import Precision
 from .Recall import Recall

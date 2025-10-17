@@ -15,7 +15,7 @@ class Entropy(Criterium):
     def __init__(self):
         super().__init__()
 
-    def impurity(self, V: pd.DataFrame) -> float:
+    def impurity(self, values: pd.DataFrame) -> float:
         """
         Calculates the entropy of a node.
 
@@ -23,7 +23,7 @@ class Entropy(Criterium):
         It is defined as: -∑(p_i * log2(p_i)) for each class i.
 
         Args:
-        - V (pd.DataFrame): Data samples for a node. The last column must contain class labels.
+        - values (pd.DataFrame): Data samples for a node. The last column must contain class labels.
 
         Returns:
         - float: The entropy value of the node.
@@ -31,15 +31,15 @@ class Entropy(Criterium):
         Raises:
         - ValueError: If the input DataFrame is empty.
         """
-        if V.empty:
+        if values.empty:
             raise ValueError("Input DataFrame is empty.")
 
-        labels = V.iloc[:, -1]
-        probabilities = labels.value_counts(normalize=True)
-        entropy = -np.sum(probabilities * np.log2(probabilities + 1e-10))
+        labels = values.iloc[:, -1]
+        probabilities = labels.value_counts(normalize=True).values
+        entropy = (-1) * np.sum(probabilities * np.log2(probabilities, where=probabilities > 0))
         return entropy
 
-    def gain(self, a: str, X: pd.DataFrame, Y: list[pd.DataFrame]) -> float:
+    def gain(self, a: str, x: pd.DataFrame, y: list[pd.DataFrame]) -> float:
         """
         Calculates the information gain from splitting a node using a given attribute.
 
@@ -47,8 +47,8 @@ class Entropy(Criterium):
 
         Args:
         - a (str): The attribute used for splitting.
-        - X (pd.DataFrame): Original dataset before the split.
-        - Y (list[pd.DataFrame]): List of datasets after the split.
+        - x (pd.DataFrame): Original dataset before the split.
+        - y (list[pd.DataFrame]): List of datasets after the split.
 
         Returns:
         - float: The information gain value.
@@ -56,15 +56,15 @@ class Entropy(Criterium):
         Raises:
         - ValueError: If the input dataset is empty or Y is not a list of DataFrames.
         """
-        if X.empty or not all(isinstance(df, pd.DataFrame) for df in Y):
+        if x.empty or not all(isinstance(df, pd.DataFrame) for df in y):
             raise ValueError("Invalid input data for gain calculation.")
 
-        total_entropy = self.impurity(X)
-        weighted_entropy = sum((len(subset) / len(X)) * self.impurity(subset) for subset in Y)
+        total_entropy = self.impurity(x)
+        weighted_entropy = sum((len(subset) / len(x)) * self.impurity(subset) for subset in y)
         gain = total_entropy - weighted_entropy
         return gain
 
-    def treeImpurity(self, nodes: list[pd.DataFrame]) -> float:
+    def tree_impurity(self, nodes: list[pd.DataFrame]) -> float:
         """
         Calculates the total entropy across all nodes in a decision tree.
 

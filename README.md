@@ -55,7 +55,7 @@ para unas entradas $X$.
 -   Tarea: **Clasificación binaria**
 -   Características: **Categóricas**
 -   Criterio de selección: **Ganancia de información**
--   Métrica para evaluación : **F1 SCORE**
+-   Métrica para evaluación: **F1 SCORE**
 
 ![alt text](img/Precision-vs-Recall-in-Machine-Learning.webp)
 
@@ -73,9 +73,9 @@ Las impurezas en árboles de decision miden cuán homogéneas o
 heterogéneas son las clases dentro de un conjunto de datos ***en un nodo
 del árbol***. La métrica de impureza determina cómo dividir los datos en
 cada nodo. Los principales métodos de evaluación de impureza son:
-**entropía** e **indice gini**.
+**entropía** e **índice gini**.
 
-*Incluyan las formulas de los dos criterios de selección y comparelos
+*Incluyan las fórmulas de los dos criterios de selección y comparelos
 considerando criterios como sensibilidad al desbalance de clases y
 eficiencia computacional*
 
@@ -97,7 +97,7 @@ eficiencia computacional*
 
 ## Paso 2. Ganancia de una característica e impureza del árbol 
 
-Los otros dos conceptos de fundamentan los árboles de decisión son la
+Los otros dos conceptos se fundamentan los árboles de decisión son la
 **ganancia de información** y la **impureza *de un arbol***.
 
 *Expliquen su proposito y la fórmula correspondiente, detallandola.*
@@ -283,11 +283,11 @@ requieran.
 -   **Datos**
     -   *c*: número de características
     -   *m*: número de ejemplares
-    -   **x**, **X** : entradas. Un ejemplo (1xc) o todos los ejemplos
+    -   **x**, **X**: entradas. Un ejemplo (1xc) o todos los ejemplos
         (mxc)
-    -   **y**, **Y** : salidas reales. Un ejemplo (1xc) o todos los
+    -   **y**, **Y**: salidas reales. Un ejemplo (1xc) o todos los
         ejemplos(mxc)
-    -   **yp**, **Yp** : salidas estimadas. Un ejemplo (1xc) o todos los
+    -   **yp**, **Yp**: salidas estimadas. Un ejemplo (1xc) o todos los
         ejemplos(cxm)
 
 ![alt text](img/Arboldedesicion.png)
@@ -371,18 +371,20 @@ class DecisionTree:
 # Como último caso de prueba entrene un árbol para el dataset propuesto por su profesor. Use 80% para entrenamiento y 20% para pruebas. Explique los resultado.
 ```
 
-# **PARTE II. USO DE FRAMEWORK PARA ARBOLES DE DECISIÓN**
+![Screenshot 2025-10-17 103710.png](img/Screenshot%202025-10-17%20103710.png)
+
+# **PARTE II. USO DE FRAMEWORK PARA ÁRBOLES DE DECISIÓN**
 
 Para este apartado se va a hacer uso de una librería que brinda de
 manera simplificada un entrenamiento flexible de distintos algoritmos
-basados en árboles de deciisón. En este caso será **scikit-learn**
+basados en árboles de decision. En este caso será **scikit-learn**
 
-**scikit-learn** es una biblioteca de Python que facilita la
+**Scikit-learn** es una biblioteca de Python que facilita la
 implementación de algoritmos de aprendizaje automático. Es ampliamente
 usada en la industria por su simplicidad, buena documentación y
 eficiencia.
 
-**scikit-learn** ofrece diferentes estrategias de aprendizaje basadas en
+**Scikit-learn** ofrece diferentes estrategias de aprendizaje basadas en
 árboles; entre ellas las que exploraremos en este laboratorio.
 
 -   [DecisionTreeClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html)
@@ -395,14 +397,14 @@ Resuelvan un problema de clasificación usando el *dataset* definido por
 su profesor. (70% entrenamiento, 10% validación y 20% pruebas)
 
 ## Paso 1: Definir el problema Antes de desarrollar un modelo, es
-fundamental establecer qué se quiere lograr y cómo se medirá el éxito.
+Fundamental establecer qué se quiere lograr y cómo se medirá el éxito.
 Esto implica explicar el problema, elegir una métrica adecuada
 (f1_score) y establecer un umbral de desempeño.
 
 *Incluyan la respuesta*
 
 ## Paso 2: Explorar y preparar los datos Para comprender la naturaleza de
-los datos que estamos utilizando es necesario **explorar** el *dataset*
+Los datos que estamos utilizando es necesario **explorar** el *dataset*
 con visualizaciones adecuadas que permitan conocer la distribución de
 clases o valores, la presencia de valores nulos o atípicos y las
 correlaciones entre variables.
@@ -424,7 +426,7 @@ validación (dev) y prueba (test).
 ```
 
 ## Paso 3: Desarrollar el modelo La estrategia que vamos a seguir es
-desarrollar tres modelos diferentes y escoger entre ellos el mejor
+Desarrollar tres modelos diferentes y escoger entre ellos el mejor
 modelo para probarlo.
 
 -   Los tres modelos se entrenan con *train*
@@ -471,7 +473,7 @@ Para seleccionar el modelo se usa el conjunto de datos de validación.
     f1_score(Y, Y_p))
 
 ### Paso 3.3: Probar el modelo seleccionado Ya seleccionado el modelo con
-el conjunto de datos de validación, se puede probar su rendimiento con
+El conjunto de datos de validación, se puede probar su rendimiento con
 los datos de prueba.
 
 1.  Se consulta la métrica f1 del modelo (.predict(X) y f1_score(Y,
