@@ -83,13 +83,38 @@ eficiencia computacional*
 
 **Entropia:**
 
+![](img/Entropy.png)
+
+Donde i = Clase única en S.
+
+p_i = Proporción de ejemplos que pertenecen a la clase i en S.
+
+
 ------------------------------------------------------------------------
 
-**Gini**
+**Gini:**
+
+![](img/Gini.png)
+
+Donde Pi es la probabilidad de que un ejemplo sea de la clase i.
 
 ------------------------------------------------------------------------
 
-**Comparación**
+**Comparación:**
+
+Ambos criterios de selección se encargan de medir qué tan impuro puede ser un dataset
+y determinar cómo dividir los datos en cada nodo.
+
+En ambos casos, la impureza se mide en un rango de 0 a 1, siendo que entre más cercano a 0
+el dataset es más puro, mientras que si se acerca más a 1, el conjunto es más impuro.
+
+La entropía se encarga de medir el grado de incertidumbre en cada uno de los subconjuntos del dataset y se elige la división 
+que produzca el nodo más puro (el de menor valor de entropía). Como esta medida depende directamente de las proporciones 
+de cada clase, los cambios en la entropía tienden a ser más variables y sensibles ante pequeños cambios o desbalances en las clases.
+
+El índice Gini, por su parte, mide la probabilidad de clasificar incorrectamente un elemento si se asigna una clase de forma aleatoria.
+Al ser una medida más sencilla, basada únicamente en operaciones cuadráticas (p_i^2), es más eficiente computacionalmente que la entropía.
+Además, suele ser menos sensible al desbalance de clases, lo que lo hace práctico en conjuntos de datos grandes o con clases desiguales.
 
 ---
 
@@ -106,9 +131,46 @@ Los otros dos conceptos se fundamentan los árboles de decisión son la
 
 **Ganancia:**
 
+Es una métrica usada en árboles de decisión que busca medir la reducción de la impureza de una característica de un 
+conjunto de datos al dividirlo en función de esa característica.
+Su propósito es ayudar a decidir cuál atributo es el mejor para dividir los datos en un nodo del árbol de decisión.
+Entre más alta sea la ganancia, mejor separa las clases y más puro se vuelve el subconjunto.
+
+![](img/Ganancia.png)
+
+I es la función que mide la impureza
+
+Dp es el dataset "padre" que se está dividiendo
+
+Np es el número de elementos del dataset padre
+
+Dj es el dataset j-ésimo en el que se ha dividido Dp
+
+Nj es el número de elementos del dataset Dj
+
 ------------------------------------------------------------------------
 
-**Impureza**
+**Impureza:**
+
+Las impurezas en árboles de decisiones se encargan de medir que tan homogéneas o heterogéneas son las clases en un conjunto
+datos en un nodo del árbol. Ell nodo es puro si tiene ejemplos de solo una clase, es más impuro si hay mezclas entre las clases.
+
+Formulas de impureza:
+
+Entropy:
+
+![](img/Entropy.png)
+
+Gini:
+
+![](img/Gini.png)
+
+Error de clasificación: Se encarga de medir la proporción de ejemplos que no pertenecen a la clase más común.
+
+![](img/ErrorClasification.png)
+
+
+---
 
 ## Paso 3. Implementación del código base para un árbol de decisión 
 
