@@ -111,3 +111,73 @@ f1_test = f1_score(y_test, y_pred_test)
 
 print("\nF1-score final en el conjunto de prueba:", round(f1_test, 4))
 
+
+
+# Operaciones para hcer conclusiones del paso 4
+
+# Altura (profundidad del árbol)
+altura = tree_model.get_depth()
+
+# Número de reglas (nodos)
+n_reglas = tree_model.tree_.node_count
+
+# Impureza promedio (Gini en cada nodo)
+impureza_promedio = np.mean(tree_model.tree_.impurity)
+
+# Exactitud en entrenamiento y validación
+acc_train = tree_model.score(X_train, y_train)
+acc_val = tree_model.score(X_val, y_val)
+
+print("\nÁrbol de Decisión:")
+print(f" - Altura: {altura}")
+print(f" - N° de reglas: {n_reglas}")
+print(f" - Impureza promedio: {impureza_promedio:.4f}")
+print(f" - Exactitud entrenamiento: {acc_train:.4f}")
+print(f" - Exactitud validación: {acc_val:.4f}")
+
+
+
+# Profundidad promedio de los árboles
+alturas = [estimator.get_depth() for estimator in rf_model.estimators_]
+altura_promedio = np.mean(alturas)
+
+# Número promedio de nodos
+reglas = [estimator.tree_.node_count for estimator in rf_model.estimators_]
+reglas_promedio = np.mean(reglas)
+
+# Impureza promedio entre todos los árboles
+impurezas = [np.mean(estimator.tree_.impurity) for estimator in rf_model.estimators_]
+impureza_promedio = np.mean(impurezas)
+
+acc_train = rf_model.score(X_train, y_train)
+acc_val = rf_model.score(X_val, y_val)
+
+print("\nBosque Aleatorio:")
+print(f" - Altura promedio: {altura_promedio:.2f}")
+print(f" - N° promedio de reglas: {reglas_promedio:.2f}")
+print(f" - Impureza promedio: {impureza_promedio:.4f}")
+print(f" - Exactitud entrenamiento: {acc_train:.4f}")
+print(f" - Exactitud validación: {acc_val:.4f}")
+
+
+# Profundidad promedio de los árboles
+alturas = [estimator[0].get_depth() for estimator in gb_model.estimators_]
+altura_promedio = np.mean(alturas)
+
+# N° promedio de reglas
+reglas = [estimator[0].tree_.node_count for estimator in gb_model.estimators_]
+reglas_promedio = np.mean(reglas)
+
+# Impureza promedio
+impurezas = [np.mean(estimator[0].tree_.impurity) for estimator in gb_model.estimators_]
+impureza_promedio = np.mean(impurezas)
+
+acc_train = gb_model.score(X_train, y_train)
+acc_val = gb_model.score(X_val, y_val)
+
+print("\nGradient Boosting:")
+print(f" - Altura promedio: {altura_promedio:.2f}")
+print(f" - N° promedio de reglas: {reglas_promedio:.2f}")
+print(f" - Impureza promedio: {impureza_promedio:.4f}")
+print(f" - Exactitud entrenamiento: {acc_train:.4f}")
+print(f" - Exactitud validación: {acc_val:.4f}")
