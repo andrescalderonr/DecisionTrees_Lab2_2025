@@ -463,7 +463,15 @@ Fundamental establecer qué se quiere lograr y cómo se medirá el éxito.
 Esto implica explicar el problema, elegir una métrica adecuada
 (f1_score) y establecer un umbral de desempeño.
 
-*Incluyan la respuesta*
+Lo que vamos hacer es construir un modelo de clasificacion basado en arboles de decision que permite predecir si las personas
+tienen un sueldo anual que sea superior a $50.000, para esto vamos a utilizar la informacion de las variables demograficas y
+laborales ubicadas en el dataset de Adult Census Income.
+
+Este es un preoblema de clasificacion binaria supervisada, debido que solo hay dos posibles resultados. El objetivo del modelo
+es que que aprenda patrones a base del conjunto de entrenamiento y pueda generalizar correctamente con informacion nueva.
+
+La metrica que vamos a utilizar es la F1-score ua que esta balance la precision y exhaustividad. Este al ser un problema de clasificacion
+binaria que puede tener clases desbalanceadas el F1-score puede alcanzar una evaluacion mas representativa que accuracy.
 
 ## Paso 2: Explorar y preparar los datos Para comprender la naturaleza de
 Los datos que estamos utilizando es necesario **explorar** el *dataset*
@@ -479,12 +487,125 @@ validación (dev) y prueba (test).
 
 ``` python
 #Analizar los datos
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import os
+
+# Obtener ruta absoluta a la carpeta resources
+base_path = os.path.join(os.path.dirname(__file__), '../../resources')
+
+train_path = os.path.join(base_path, 'adult.data')
+test_path = os.path.join(base_path, 'adult.test')
+
+# Definir nombres de columnas
+columns = [
+    'age', 'workclass', 'fnlwgt', 'education', 'education-num',
+    'marital-status', 'occupation', 'relationship', 'race', 'sex',
+    'capital-gain', 'capital-loss', 'hours-per-week', 'native-country', 'income'
+]
+
+# Cargar archivos
+train_data = pd.read_csv(train_path, names=columns, na_values='?', skipinitialspace=True)
+test_data = pd.read_csv(test_path, names=columns, na_values='?', skipinitialspace=True, skiprows=1)
+
+# Unir para análisis conjunto
+data = pd.concat([train_data, test_data], axis=0)
+
+# Normalizar la columna 'income'
+data['income'] = data['income'].str.replace('.', '', regex=False).str.strip()
+
+print("Dimensiones del dataset:", data.shape)
+print("\nPrimeras filas del dataset:")
+print(data.head())
+
+print("\nValores nulos por columna:")
+print(data.isnull().sum())
+
+print("\nDistribución de la variable objetivo (income):")
+print(data['income'].value_counts())
+
+# Distribución de algunas variables numéricas
+data[['age', 'hours-per-week', 'education-num']].hist(bins=20, figsize=(10, 5))
+plt.suptitle('Distribución de variables numéricas')
+plt.show()
+
+# Seleccionar solo columnas numéricas
+numeric_data = data.select_dtypes(include=['int64', 'float64'])
+
+# Calcular matriz de correlación
+corr_matrix = numeric_data.corr()
+
+# Mostrar la matriz completa
+print("\nMatriz de correlación:")
+print(corr_matrix)
+
+# Visualización con mapa de calor
+plt.figure(figsize=(12, 8))
+sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm")
+plt.title("Matriz de correlación entre variables numéricas")
+plt.show()
 ```
 
 *Incluyan observaciones*
 
 ``` python
-#Preparar los datos separandolos en entrenamiento, validación y pruebas.
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+import os
+
+# Cargar dataset
+base_path = os.path.join(os.path.dirname(__file__), '../../resources')
+train_path = os.path.join(base_path, 'adult.data')
+test_path = os.path.join(base_path, 'adult.test')
+
+columns = [
+    'age', 'workclass', 'fnlwgt', 'education', 'education-num',
+    'marital-status', 'occupation', 'relationship', 'race', 'sex',
+    'capital-gain', 'capital-loss', 'hours-per-week', 'native-country', 'income'
+]
+
+train_data = pd.read_csv(train_path, names=columns, na_values='?', skipinitialspace=True)
+test_data = pd.read_csv(test_path, names=columns, na_values='?', skipinitialspace=True, skiprows=1)
+
+data = pd.concat([train_data, test_data], axis=0)
+data['income'] = data['income'].str.replace('.', '', regex=False).str.strip()
+
+# Reemplazar valores nulos por la moda de cada columna
+for col in data.columns:
+    if data[col].isnull().sum() > 0:
+        data[col] = data[col].fillna(data[col].mode()[0])
+
+# Codificación de variables categóricas
+label_encoders = {}
+for col in data.select_dtypes(include='object').columns:
+    le = LabelEncoder()
+    data[col] = le.fit_transform(data[col])
+    label_encoders[col] = le
+
+# Normalización / estandarización de variables numéricas
+scaler = StandardScaler()
+num_cols = data.select_dtypes(include=['int64', 'float64']).columns
+data[num_cols] = scaler.fit_transform(data[num_cols])
+
+# Separar variables predictoras (X) y objetivo (y)
+X = data.drop('income', axis=1)
+y = data['income']
+
+# División de datos: 70% entrenamiento, 10% validación, 20% prueba
+# Primero 70% entrenamiento y 30% temporal (validación + prueba)
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+
+# De los 30% restantes: validación (10%) y prueba (20%)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=(2/3), random_state=42, stratify=y_temp)
+
+print("Tamaño del conjunto de entrenamiento:", X_train.shape)
+print("Tamaño del conjunto de validación:", X_val.shape)
+print("Tamaño del conjunto de prueba:", X_test.shape)
+
+
 ```
 
 ## Paso 3: Desarrollar el modelo La estrategia que vamos a seguir es
@@ -505,6 +626,15 @@ modelo para probarlo.
 
 ``` python
 # Entrenar un árbol de decisión
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import f1_score
+tree_model = DecisionTreeClassifier(random_state=42)
+tree_model.fit(X_train, y_train)
+
+y_pred_tree = tree_model.predict(X_val)
+f1_tree = f1_score(y_val, y_pred_tree)
+
+print("F1-score (Árbol de Decisión):", round(f1_tree, 4))
 ```
 
 #### Paso 3.1.2: Entrenar un bosque aleatorio
@@ -515,6 +645,15 @@ modelo para probarlo.
 
 ``` python
 #Entrenar un bosque aleatorio
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import f1_score
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model.fit(X_train, y_train)
+
+y_pred_rf = rf_model.predict(X_val)
+f1_rf = f1_score(y_val, y_pred_rf)
+
+print("F1-score (Bosque Aleatorio):", round(f1_rf, 4))
 ```
 
 #### Paso 3.1.3: Entrenar un bosque con potenciación de gradiente
@@ -525,6 +664,15 @@ modelo para probarlo.
 
 ``` python
 #Entrenar el bosque con potenciación de gradiente
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import f1_score
+gb_model = GradientBoostingClassifier(random_state=42)
+gb_model.fit(X_train, y_train)
+
+y_pred_gb = gb_model.predict(X_val)
+f1_gb = f1_score(y_val, y_pred_gb)
+
+print("F1-score (Gradient Boosting):", round(f1_gb, 4))
 ```
 
 ### Paso 3.2: Seleccionar el mejor modelo
@@ -533,7 +681,18 @@ Para seleccionar el modelo se usa el conjunto de datos de validación.
 
 1.  Se consulta la métrica f1 de cada uno de los modelos (.predict(X) y
     f1_score(Y, Y_p))
+    
+``` python
+scores = {
+    'Decision Tree': f1_tree,
+    'Random Forest': f1_rf,
+    'Gradient Boosting': f1_gb
+}
 
+best_model_name = max(scores, key=scores.get)
+print("\nMejor modelo según F1 en validación:", best_model_name)
+    
+```
 ### Paso 3.3: Probar el modelo seleccionado Ya seleccionado el modelo con
 El conjunto de datos de validación, se puede probar su rendimiento con
 los datos de prueba.
@@ -543,6 +702,18 @@ los datos de prueba.
 
 ``` python
 #Evaluar el modelo
+if best_model_name == 'Decision Tree':
+    best_model = tree_model
+elif best_model_name == 'Random Forest':
+    best_model = rf_model
+else:
+    best_model = gb_model
+
+# Evaluar con el conjunto de prueba
+y_pred_test = best_model.predict(X_test)
+f1_test = f1_score(y_test, y_pred_test)
+
+print("\nF1-score final en el conjunto de prueba:", round(f1_test, 4))
 ```
 
 ## Paso 4: Redactar conclusiones
