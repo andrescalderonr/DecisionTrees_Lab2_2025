@@ -820,7 +820,7 @@ Logramos tener cooridnacion para el desarrollo del lab, nos comprometemos a segu
 **6**.¿Qué referencias usaron? ¿Cuál fue la más útil? Incluya citas con
 los estándares adecuados.
 
-
+Usamos refenrecians sobre arboles de decisions, la mas util fue el de arboles de decision, que son, como funcionan y cuando usarlo
 
 ## Bibliografia
 Guerard_Guillaume. (2024, February 16). 3 Mesures : Impureté de Gini, entropie et erreur de classification - Complex systems and AI. Sistemas Complejos E IA. https://complex-systems-ai.com/es/analisis-de-datos/entropia-y-error-de-gini/#
