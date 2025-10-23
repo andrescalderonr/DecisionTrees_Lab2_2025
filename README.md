@@ -795,19 +795,39 @@ print("\nF1-score final en el conjunto de prueba:", round(f1_test, 4))
 **1.** ¿Cuál fue el tiempo total invertido en el laboratorio por cada
 uno de ustedes? (Horas/Hombre)
 
+6 Horas/Santiago Botero
+7 Horas/Andres Calderon
+
 **2.** ¿Cuál es el estado actual del laboratorio? ¿Por qué?
 
+Esta completado, se desarrollo todo con tiempo.
+
 **3.** ¿Cuál consideran fue el mayor logro? ¿Por qué?
+
+Lograr entrenar las IA para el dataset, fue un proceso donde hubo varios problemas que se pudo sacar adelante.
 
 **4.** ¿Cuál consideran que fue el mayor problema técnico? ¿Qué hicieron
 para resolverlo?
 
+Al momento de usar los datos de entrenamiento no sabiamos que habia datos que no eran validos y tenian un ? o que tenian un punto al final, lo que cambiaba un poco la estructura de lo que teniamos que hacer,
+para solucionar esto lo que hicimos fue que 
+
 **5.** ¿Qué hicieron bien como equipo? ¿Qué se comprometen a hacer para
 mejorar los resultados?
+
+Logramos tener cooridnacion para el desarrollo del lab, nos comprometemos a seguir con el buen rendimiento
 
 **6**.¿Qué referencias usaron? ¿Cuál fue la más útil? Incluya citas con
 los estándares adecuados.
 
 
+
 ## Bibliografia
 Guerard_Guillaume. (2024, February 16). 3 Mesures : Impureté de Gini, entropie et erreur de classification - Complex systems and AI. Sistemas Complejos E IA. https://complex-systems-ai.com/es/analisis-de-datos/entropia-y-error-de-gini/#
+DecisionTreeClassifier. (s. f.). Scikit-learn. https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html
+Search - scikit-learn 1.7.2 documentation. (s. f.). https://scikit-learn.org/stable/search.html?q=RandomForestClassifier
+GradientBoostingClassifier. (s. f.). Scikit-learn. https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html
+Javier. (2025, 24 enero). Impurezas en arboles de decision. https://www.iayprogramacion.com/impurezas-en-arboles-de-decision-indice-gini-entropia-y-error-de-clasificacion
+Ferrero, R. (2025, 23 mayo). Árboles de decisión: qué son, cómo funcionan y cuándo usarlos. Máxima Formación. https://www.maximaformacion.es/blog-dat/que-son-los-arboles-de-decision-y-para-que-sirven
+Hankare, O. (2023, 29 enero). Decision Trees. Medium. https://ompramod.medium.com/decision-trees-91530198a5a5
+Ganancia de información | Interactive Chaos. (s. f.). https://interactivechaos.com/es/manual/tutorial-de-machine-learning/ganancia-de-informacion
